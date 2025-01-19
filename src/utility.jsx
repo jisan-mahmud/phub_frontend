@@ -30,3 +30,7 @@ export const isAuthenticated = () => {
   const token = localStorage.getItem('authToken');
   return token? true : false; 
 };
+
+export const get_base_url = () => {
+  return 'http://127.0.0.1:8000/'
+}

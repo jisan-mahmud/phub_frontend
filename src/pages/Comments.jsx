@@ -4,36 +4,16 @@ import SnippetCard from '../components/SnippetCard';
 import CommentList from '../components/CommentList';
 import CommentForm from '../components/CommentForm';
 import { fetchSnippet } from '../services/snippetService';
+import { get_base_url } from '../utility';
+import { fetchComments } from '../services/commentService';
 
 function Comments() {
   const { snippetId } = useParams(); // Get the snippetId from the URL
-  const [comments, setComments] = useState([
-    {
-      id: 1,
-      content: "This is really helpful! I've been looking for a clean way to handle file uploads.",
-      author: {
-        name: 'Emma Wilson',
-        avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Emma'
-      },
-      timestamp: '2 hours ago',
-      likes: 5,
-      replies: [
-        {
-          id: 2,
-          content: "Glad you found it useful! Don't forget to add error handling.",
-          author: {
-            name: 'John Doe',
-            avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=John'
-          },
-          timestamp: '1 hour ago',
-          likes: 2
-        }
-      ]
-    }
-  ]);
+  const [snippet, setSnippet] = useState(null);
+  const [comments, setComments] = useState([]);
+  const [hasMore, setHasMore] = useState(false)
+  const [page, setPage] = useState(1)
   
-  const [snippet, setSnippet] = useState(null); // Initialize snippet state
-
   useEffect(() => {
     const loadSnippet = async () => {
       try {
@@ -46,6 +26,14 @@ function Comments() {
     
     loadSnippet(); // Call the function to load the snippet
   }, [snippetId]); // Dependency array to run the effect whenever snippetId changes
+
+  useEffect( () =>  {
+    async function loadComment() {
+      const fetch_comments = await fetchComments(snippetId)
+      setComments(fetch_comments.results)
+    }
+    loadComment()
+  }, [])
 
   const handleAddComment = (content) => {
     const newComment = {
@@ -68,7 +56,7 @@ function Comments() {
       
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
-          Comments ({comments.length})
+          {comments.length}
         </h2>
         
         <CommentForm onSubmit={handleAddComment} />
