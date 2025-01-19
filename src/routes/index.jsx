@@ -27,20 +27,20 @@ export const router = createBrowserRouter([
       },
       {
         path: 'profile',
-        element: <Profile/>,
+        element: <Profile/>
       },
       {
         path: 'snippets/:snippetId/comments',
         element: <Comments />,
       },
-      {
-        path: 'signup',
-        element: <SignUp />,
-      },
-      {
-        path: 'login',
-        element: <Login />,
-      },
     ],
+  },
+  {
+    path: 'signup',
+    element: <SignUp />,
+  },
+  {
+    path: 'login',
+    element: <Login />,
   },
 ]);

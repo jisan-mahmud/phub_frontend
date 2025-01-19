@@ -11,7 +11,7 @@ import { isAuthenticated } from '../utility';
 
 function Login() {
   const navigate = useNavigate()
-  if(isAuthenticated){
+  if(isAuthenticated()){
     navigate('/profile/')
   }
 
@@ -67,7 +67,7 @@ function Login() {
       
       if(response.ok){
         const data = await response.json(); // Parse the JSON response
-        localStorage.setItem('auth-token', data.access)
+        localStorage.setItem('authToken', data.access)
         toast.success('Login successful. Redirecting...');
         navigate('/profile/')
       }

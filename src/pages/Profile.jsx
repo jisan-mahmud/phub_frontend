@@ -3,36 +3,6 @@ import SnippetCard from '../components/SnippetCard';
 
 function Profile() {
   const [activeTab, setActiveTab] = useState('snippets');
-  
-  const userProfile = {
-    name: 'John Doe',
-    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=John',
-    bio: 'Full-stack developer passionate about React and Node.js',
-    stats: {
-      snippets: 24,
-      followers: 156,
-      following: 89
-    }
-  };
-
-  const userSnippets = [
-    {
-      id: 1,
-      title: 'Node.js File Upload',
-      description: 'Example of handling file uploads in Node.js',
-      language: 'javascript',
-      code: `const multer = require('multer');
-const upload = multer({ dest: 'uploads/' });
-
-app.post('/upload', upload.single('file'), (req, res) => {
-  res.json({ file: req.file });
-});`,
-      author: userProfile,
-      likes: 15,
-      comments: 2,
-      tags: ['nodejs', 'express']
-    }
-  ];
 
   return (
     <div className="space-y-6">

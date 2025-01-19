@@ -12,7 +12,6 @@ function SnippetCard({ snippet }) {
   const [voted, setVoted] = useState(0);
   const [copied, setCopied] = useState(false);
   const navigate = useNavigate()
-
   const handleVote = (voteType) => {
     if(isAuthenticated()){
       if (voteType == 'upvote') {
@@ -57,13 +56,13 @@ function SnippetCard({ snippet }) {
       await navigator.share({
         title: snippet.title,
         text: snippet.description,
-        url: window.location.href
+        url: `${window.location.href}/snippets/${snippet.id}`
       });
     } catch (err) {
       console.log('Share failed:', err);
     }
   };
-
+  const voted_color = "text-indigo-600";
   return (
     <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden">
       <div className="p-6">
@@ -156,7 +155,7 @@ function SnippetCard({ snippet }) {
                 className={`p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700`}
                 aria-label="Upvote"
               >
-                <FiArrowUp className="w-5 h-5" />
+                <FiArrowUp className={`w-5 h-5 ${voted === 1 && voted_color}`} />
               </button>
               
               <span className={`font-medium ${
@@ -171,7 +170,7 @@ function SnippetCard({ snippet }) {
                 className={`p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700`}
                 aria-label="Downvote"
               >
-                <FiArrowDown className="w-5 h-5" />
+                <FiArrowDown className={`w-5 h-5 ${voted === -1 && voted_color}`} />
               </button>
             </div>
             <Link

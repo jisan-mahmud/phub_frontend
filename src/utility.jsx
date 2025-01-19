@@ -27,6 +27,6 @@ export function timeAgo(postedTime) {
 }
 
 export const isAuthenticated = () => {
-  const token = localStorage.getItem('authToken'); // or sessionStorage
-  return !!token; // Returns true if a token exists
+  const token = localStorage.getItem('authToken');
+  return token? true : false; 
 };

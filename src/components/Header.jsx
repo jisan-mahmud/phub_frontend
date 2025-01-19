@@ -2,11 +2,13 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import { FiSun, FiMoon, FiSearch } from 'react-icons/fi';
+import { isAuthenticated } from '../utility';
 
 function Header() {
   const { isDark, toggleTheme } = useTheme();
   const [isSearchFocused, setIsSearchFocused] = useState(false);
-  const isLoggedIn = false; // This would come from your auth context
+  const isLoggedIn = isAuthenticated();
+
 
   return (
     <header className="sticky top-0 z-40 bg-white dark:bg-gray-800 shadow-sm">
