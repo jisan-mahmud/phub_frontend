@@ -27,10 +27,38 @@ export function timeAgo(postedTime) {
 }
 
 export const isAuthenticated = () => {
-  const token = localStorage.getItem('authToken');
+  const token = localStorage.getItem('accessToken');
   return token? true : false; 
 };
 
 export const get_base_url = () => {
   return 'http://127.0.0.1:8000/'
 }
+
+
+export const get_access_token = async () => {
+  const base_url = get_base_url();
+  const url = `${base_url}api/accounts/auth/jwt/refresh/`;
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        refresh: localStorage.getItem('authToken'),
+      }),
+    });
+
+    if (response.ok) {
+      const data = await response.json(); // Parse the JSON data
+      if (data.access) {
+        localStorage.setItem('authToken', data.access); // Store the new access token
+      }
+    } else {
+      localStorage.removeItem('authToken'); // Remove token if refresh fails
+    }
+  } catch (e) {
+    console.error('Something went wrong:', e); // Log the error
+  }
+};

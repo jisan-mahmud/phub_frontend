@@ -41,40 +41,37 @@ function Login() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent default form submission
+    e.preventDefault();
+    setIsLoading(true);
   
     const url = 'http://127.0.0.1:8000/api/accounts/auth/jwt/create/';
-    
+  
     try {
-      // Send the form data as a POST request
       const response = await fetch(url, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json', // Specify JSON data format
-        },
-        body: JSON.stringify(formData), // Convert formData to JSON string
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
       });
   
-      if (response.status === 401) {
-        toast.error("Login credentials are invalid!");
+      const data = await response.json();
+  
+      if (!response.ok) {
+        const errorMessage = data.detail || "An error occurred. Please try again.";
+        toast.error(errorMessage);
         return;
       }
   
-      if (!response.ok) {
-        toast.warning("Something went wrong! Try again.");
-        return;
-      }
-      
-      if(response.ok){
-        const data = await response.json(); // Parse the JSON response
-        localStorage.setItem('authToken', data.access)
-        toast.success('Login successful. Redirecting...');
-        navigate('/profile/')
-      }
+      localStorage.setItem('accessToken', data.access);
+      localStorage.setItem('refreshToken', data.refresh)
+      toast.success("Login successful!");
+      navigate('/profile/');
     } catch (error) {
-      console.error('Error submitting form:', error.message);
+      toast.error("Network error. Please check your connection.");
+    } finally {
+      setIsLoading(false);
     }
   };
+  
   
 
   return (
